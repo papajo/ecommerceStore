@@ -1,7 +1,18 @@
+var dbpass = require('./keys.js');
 var express = require('express');
 var morgan = require('morgan');
+var mongoose = require('mongoose');
+
 
 var app = express();
+console.log(dbpass);
+mongoose.connect(dbpass, function(err){
+    if (err){ 
+        console.log(err);
+    } else {
+        console.log('connected to mongoose database..');
+    }
+});
 
 //Middlware
 app.use(morgan('dev'));

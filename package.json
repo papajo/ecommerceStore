@@ -14,7 +14,9 @@
   "author": "P Joshi <joshipv2@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "express": "^4.13.4",
+    "mongoose": "^4.4.10",
     "morgan": "^1.7.0"
   }
 }
