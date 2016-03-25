@@ -4,9 +4,13 @@ var morgan = require('morgan');
 var mongoose = require('mongoose');
 var User = require('./models/user');
 var bodyParser = require('body-parser');
+var ejs = require('ejs');
+var ejsmate = require('ejs-mate');
+var mainRoutes = require('./routes/main');
+var userRoutes = require('./routes/user');
 
 var app = express();
-//console.log(dbpass);
+
 mongoose.connect(dbpass, function(err){
     if (err){ 
         console.log(err);
@@ -16,25 +20,15 @@ mongoose.connect(dbpass, function(err){
 });
 
 //Middlware
+app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.engine('ejs', ejsmate);
+app.set('view engine', 'ejs');
 
-//Routes
-app.post('/create-user', function(req, res, next) {
-    var user = new User();
-    //console.log(req.body);
-    user.profile.name = req.body.name;
-    user.email = req.body.email;
-    user.password = req.body.password;
-    
-    user.save(function(err) {
-        if(err) next(err);
-        
-        res.json("Successfully created new user");
-    });
-});
-
+app.use(mainRoutes);
+app.use(userRoutes);
 
 app.listen(3000, function (err) {
     if (err) throw err;
