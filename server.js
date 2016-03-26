@@ -1,4 +1,4 @@
-var dbpass = require('./keys.js');
+var secret = require('./config/secret');
 var express = require('express');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
@@ -14,7 +14,7 @@ var flash = require('express-flash');
 
 var app = express();
 
-mongoose.connect(dbpass, function(err){
+mongoose.connect(secret.database, function(err){
     if (err){ 
         console.log(err);
     } else {
@@ -30,7 +30,7 @@ app.use(cookieParser());
 app.use(session({
     resave: true,
     saveUninitialized: true,
-    secret: "!!!AdamEve!!!"
+    secret: secret.secretKey
 }));
 app.use(flash());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -40,7 +40,7 @@ app.set('view engine', 'ejs');
 app.use(mainRoutes);
 app.use(userRoutes);
 
-app.listen(3000, function (err) {
+app.listen(secret.port, function (err) {
     if (err) throw err;
-    console.log("Server is listening on port 3000...");
+    console.log("Server is listening on port " + secret.port + "...");
 });
