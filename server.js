@@ -11,7 +11,7 @@ var userRoutes = require('./routes/user');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var flash = require('express-flash');
-var mongoStore = require('connect-mongo')(session);
+var mongoStore = require('connect-mongo/es5')(session);
 var passport = require('passport');
 
 var app = express();
@@ -39,6 +39,8 @@ app.use(flash());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('ejs', ejsmate);
 app.set('view engine', 'ejs');
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(mainRoutes);
 app.use(userRoutes);
