@@ -11,6 +11,8 @@ var userRoutes = require('./routes/user');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var flash = require('express-flash');
+var mongoStore = require('connect-mongo')(session);
+var passport = require('passport');
 
 var app = express();
 
@@ -30,7 +32,8 @@ app.use(cookieParser());
 app.use(session({
     resave: true,
     saveUninitialized: true,
-    secret: secret.secretKey
+    secret: secret.secretKey,
+    store: new mongoStore({url:secret.database, autoReconnect: true})
 }));
 app.use(flash());
 app.use(bodyParser.urlencoded({ extended: true }));
