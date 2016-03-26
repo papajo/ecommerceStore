@@ -22,7 +22,7 @@ router.get('/signup', function(req, res, next){
 });
 
 router.get('/profile', function(req, res, next){
-    User.findOne({ _id: req.user._id }, function(err, user){
+    User.findOne({ id: req.user._id }, function(err, user){
         if(err) return next(err);   
         res.render('accounts/profile', { user: user });
     });
@@ -47,6 +47,11 @@ router.post('/signup', function(req, res, next) {
             });
         }
     });
+});
+
+router.get('/logout', function(req, res, next){
+    req.logout();
+    res.redirect('/');
 });
 
 module.exports = router;

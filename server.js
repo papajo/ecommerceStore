@@ -41,7 +41,10 @@ app.engine('ejs', ejsmate);
 app.set('view engine', 'ejs');
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(function(req, res, next){
+    res.locals.user = req.user;
+    next();
+});
 app.use(mainRoutes);
 app.use(userRoutes);
 
