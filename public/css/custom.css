@@ -5,3 +5,8 @@ body {
 #navbar-h {
     margin-top: -4%;
 }
+
+#profile-address {
+    color: #c0292b;
+    font-weight: bold;
+}
