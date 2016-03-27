@@ -15,6 +15,7 @@ var flash = require('express-flash');
 var mongoStore = require('connect-mongo/es5')(session);
 var passport = require('passport');
 var adminRoutes = require('./routes/admin'); 
+var Category = require('./models/category');
 
 var app = express();
 
@@ -50,6 +51,15 @@ app.use(function(req, res, next){
     res.locals.user = req.user;
     next();
 });
+
+app.use(function(req, res, next){
+    Category.find({}, function(err, categories){
+        if(err) return next(err);
+        res.locals.categories = categories;
+        next();
+    });
+});
+
 app.use(mainRoutes);
 app.use(userRoutes);
 app.use(adminRoutes);
