@@ -1,4 +1,5 @@
 var secret = require('./config/secret');
+var path = require('path');
 var express = require('express');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
@@ -13,6 +14,7 @@ var cookieParser = require('cookie-parser');
 var flash = require('express-flash');
 var mongoStore = require('connect-mongo/es5')(session);
 var passport = require('passport');
+var adminRoutes = require('./routes/admin'); 
 
 var app = express();
 
@@ -25,7 +27,11 @@ mongoose.connect(secret.database, function(err){
 });
 
 //Middlware
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname + '/public')));
+app.set('views',path.join(__dirname, 'views'));
+app.engine('ejs', ejsmate);
+app.set('view engine', 'ejs');
+
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -37,8 +43,7 @@ app.use(session({
 }));
 app.use(flash());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.engine('ejs', ejsmate);
-app.set('view engine', 'ejs');
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next){
@@ -47,6 +52,7 @@ app.use(function(req, res, next){
 });
 app.use(mainRoutes);
 app.use(userRoutes);
+app.use(adminRoutes);
 
 app.listen(secret.port, function (err) {
     if (err) throw err;
