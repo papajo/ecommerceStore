@@ -22,7 +22,7 @@ router.get('/signup', function(req, res, next){
 });
 
 router.get('/profile', function(req, res, next){
-    User.findOne({ id: req.user._id }, function(err, user){
+    User.findOne({ _id: req.user._id }, function(err, user){
         if(err) return next(err);   
         res.render('accounts/profile', { user: user });
     });
@@ -34,6 +34,7 @@ router.post('/signup', function(req, res, next) {
     user.profile.name = req.body.name;
     user.email = req.body.email;
     user.password = req.body.password;
+    user.profile.picture = user.gravatar();
     
     User.findOne({ email: req.body.email }, function(err, existingUser){
         if(existingUser){
@@ -43,7 +44,10 @@ router.post('/signup', function(req, res, next) {
             user.save(function(err, user){
                 if (err) return next(err);
                 
-                return res.redirect('/');
+                req.logIn(user, function(err){
+                    if(err) return next(err);
+                    res.redirect('/profile');
+                })
             });
         }
     });
