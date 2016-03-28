@@ -11,7 +11,7 @@ var ProductSchema = new Schema({
 
 ProductSchema.plugin(mongoosastic, {
     hosts: [
-        'localhost: 9200'
+        '127.0.0.1:9200'
     ]
 });
 
