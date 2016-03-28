@@ -1,6 +1,27 @@
 var router = require('express').Router();
 var Product = require('../models/product');
 
+Product.createMapping(function(err){
+    if(err) {
+        console.log(" Error createing Mapping " + err);
+    } else {
+        console.log("Mapping created " + mapping);
+    }
+});
+
+var stream = Product.synchronize();
+var count = 0;
+
+stream.on('data', function() {
+    count++;
+});
+stream.on('close', function() {
+    console.log("Indexed " + count + " documents");
+});
+stream.on('error', function() {
+    console.log(err);
+});
+
 router.get('/', function(req, res){
     res.render('main/home');
 });
