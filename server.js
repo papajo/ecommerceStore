@@ -16,6 +16,7 @@ var mongoStore = require('connect-mongo/es5')(session);
 var passport = require('passport');
 var adminRoutes = require('./routes/admin'); 
 var Category = require('./models/category');
+var apiRoutes = require('./api/api');
 
 var app = express();
 
@@ -63,6 +64,7 @@ app.use(function(req, res, next){
 app.use(mainRoutes);
 app.use(userRoutes);
 app.use(adminRoutes);
+app.use('/api', apiRoutes);
 
 app.listen(secret.port, function (err) {
     if (err) throw err;
