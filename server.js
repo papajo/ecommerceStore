@@ -17,6 +17,7 @@ var passport = require('passport');
 var adminRoutes = require('./routes/admin'); 
 var Category = require('./models/category');
 var apiRoutes = require('./api/api');
+var cartSize = require('./middlewares/middlewares');
 
 var app = express();
 
@@ -52,6 +53,8 @@ app.use(function(req, res, next){
     res.locals.user = req.user;
     next();
 });
+
+app.use(cartSize);
 
 app.use(function(req, res, next){
     Category.find({}, function(err, categories){
