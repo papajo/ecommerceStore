@@ -13,7 +13,7 @@ $(function(){
                 var data = json.hits.hits.map(function(hit){
                 return hit;
             });
-                console.log(data);
+                //console.log(data);
                 $('#searchResults').empty();
                 for(var i = 0; i < data.length; i++){
                     var html = "";
