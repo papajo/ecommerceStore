@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var Product = require('../models/product');
+var Cart = require('../models/cart');
 
 function paginate(req, res, next) {
     var perPage = 9;
@@ -44,18 +45,19 @@ stream.on('error', function() {
 
 router.get('/cart', function(req, res, next){
    Cart
-    .findOne({owner: req.user_.id})
+    .findOne({owner: req.user._id})
     .populate('items.item')
     .exec(function(err, foundCart){
        if(err) return next(err);
        res.render('main/cart', {
-           cart: foundCart
+           foundCart: foundCart
        });
    });
 });
 
 router.post('/product/:product_id', function(req, res, next){
    Cart.findOne({ owner: req.user._id }, function(err, cart){
+       console.log(req.body.priceValue);
        cart.items.push({
            item: req.body.product_id,
            price: parseFloat(req.body.priceValue),

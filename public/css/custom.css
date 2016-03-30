@@ -10,3 +10,7 @@ body {
     color: #c0292b;
     font-weight: bold;
 }
+
+.product-image {
+    width: 100%;
+}
