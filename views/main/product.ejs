@@ -10,7 +10,7 @@
         <div class="col-md-4">
             <h3><%= product.name %></h3>
             <h1>$<%= product.price %></h1>
-            <form method="post">
+            <form method="post" action="/cart">
                 <div class="btn-group" role="group" aria-label="...">
                    <input type="hidden" name="quantity" id="quantity" value="1">
                     <button type="button" id="minus" class="btn btn-default">-</button>
