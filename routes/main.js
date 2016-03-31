@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var Product = require('../models/product');
 var Cart = require('../models/cart');
+var stripe = require('stripe')('sk_test_APfSOVPZY7MXLj3D1QlDXGRY ');
 
 function paginate(req, res, next) {
     var perPage = 9;
@@ -44,7 +45,7 @@ stream.on('error', function() {
 });
 
 router.get('/cart', function(req, res, next){
-   Cart
+    Cart
     .findOne({owner: req.user._id})
     .populate('items.item')
     .exec(function(err, foundCart){
@@ -139,6 +140,20 @@ router.get('/product/:id', function(req, res, next){
         if(err) return next(err);
         res.render('main/product', {
             product: product
+        });
+    });
+});
+
+router.post('/payment', function(req, res, next){
+    var stripeToken = req.body.stripeToken;
+    var currentCharges = Math.round(req.body.stripeMoney * 100);
+    stripe.customers.create({
+        source: stripeToken,
+    }).then(function(customer){
+        return stripe.charges.create({
+            amount: currentCharges,
+            currency: 'usd',
+            customer: customer.id
         });
     });
 });
