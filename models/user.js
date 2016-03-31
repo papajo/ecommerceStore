@@ -17,7 +17,10 @@ var UserSchema = new Schema({
     history: [{
         paid: {type: Number, default: 0},
         item: {type: Schema.Types.ObjectId, ref: 'Product'}
-    }]
+    }],
+    
+    facebook: String,
+    tokens: Array
 
 });
 
